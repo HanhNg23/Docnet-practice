@@ -1,4 +1,6 @@
 ﻿using DocnetCorePractice.Data.Entity;
+using DocnetCorePractice.Enum;
+using DocnetCorePractice.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocnetCorePractice.Controllers
@@ -27,7 +29,7 @@ namespace DocnetCorePractice.Controllers
         {
             new CaffeEntity()
             {
-                Id = Guid.NewGuid().ToString("N"),
+                Id = "0",
                 Name = "Ca phe sua",
                 Price = 20000,
                 Discount = 10,
@@ -38,6 +40,30 @@ namespace DocnetCorePractice.Controllers
 
         private static List<OrderItemEntity> orderItems = new List<OrderItemEntity>();
         private static List<OrderEntity> orders = new List<OrderEntity>();
+
+        [HttpPost]
+        [Route("/api/[controller]/ordercaffe")]
+        public IActionResult AddCaffe([FromBody] CreateOrderRequestModel request)
+        {
+            var totalPrice = CalculationExtension.TotalPriceCalc(caffes, request);
+            return Ok(request);
+        }
+    }
+
+    public static class CalculationExtension
+    {
+        public static double TotalPriceCalc(List<CaffeEntity> caffes , CreateOrderRequestModel model)
+        {
+            double result = 0;
+
+            foreach (var item in model.Items)
+            {
+                var caffe = caffes.Where(x => x.Id == item.CaffeId).FirstOrDefault();
+                double price = caffe.Price * item.Volumn * ((100.0 - caffe.Discount) / 100);
+                result += price;
+            }
+            return result;
+        }
     }
 }
 
@@ -68,7 +94,7 @@ namespace DocnetCorePractice.Controllers
 // 7.Viết API get all user data trả về được parse theo UserModel. nếu không có user nào thì return code 204
 
 // 8.Với input là ngày sinh(có kiều dữ liệu DateTime) và role(có kiểu dữ liệu Enum), Viết API get users với điều kiện:
-//      - là thành viên vip(có thể là vip1 hoặc vip2) và sinh trong tháng 6
+//      - là thành viên thuoc input(role) và sinh trong tháng cùa input(datetime)
 //  Nếu không có user nào thì return code 204
 
 // 9.Viết API update user với input là UserModel, kiểm tra điều kiện:
@@ -111,7 +137,7 @@ namespace DocnetCorePractice.Controllers
 //  ]
 //}
 
-// 13. Viết function tính tổng tiền của một order với input là  CreateOrderResponse model.
+// 13. Viết function tính tổng tiền của một order với input là  CreateOrderResquest model.
 
 // 14. Viết API tạo 1 order mới với input là CreateOrderRequest model được tạo ở bài 11. Yêu cầu:
 //        - Kiểm tra nếu userId nếu không tồn tại thì return code 404

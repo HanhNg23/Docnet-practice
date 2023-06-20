@@ -6,7 +6,7 @@
         public string CaffeId { get; set; }
         public string OrderId { get; set; }
         public string CaffeName { get; set; }
-        public int Volumn { get; set; }
+        public int Volumn { get; set; }// số lượng
         public double UnitPrice { get; set; }
         public double ItemPrice { get; set; }
         public bool IsActice { get; set; }
