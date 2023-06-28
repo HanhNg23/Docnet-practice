@@ -12,6 +12,7 @@ namespace DocnetCorePractice.Data.Entity
         public string PhoneNumber { get; set; }
         public double Balance { get; set; }
         public int TotalProduct { get; set; }
+        public bool IsActive { get; set; }
         public Roles Roles { get; set; }
     }
 }

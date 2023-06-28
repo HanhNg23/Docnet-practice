@@ -1,6 +1,6 @@
 ﻿using DocnetCorePractice.Data.Entity;
-using DocnetCorePractice.Enum;
 using DocnetCorePractice.Model;
+using DocnetCorePractice.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocnetCorePractice.Controllers
@@ -8,61 +8,24 @@ namespace DocnetCorePractice.Controllers
     [ApiController]
     public class ActionController : ControllerBase
     {
-        private static List<UserEntity> users = new List<UserEntity>()
+        public IUserService _userService;
+        public ActionController(IUserService userService)
         {
-            new UserEntity()
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                FirstName = "huy",
-                LastName = "nguyen",
-                Sex = Enum.Sex.Male,
-                Address = "Ho chi Minh",
-                Balance = 100000,
-                DateOfBirth = DateTime.Now,
-                PhoneNumber = "0123456789",
-                Roles = Enum.Roles.Basic,
-                TotalProduct = 0
-            }
-        };
-
-        private static List<CaffeEntity> caffes = new List<CaffeEntity>()
-        {
-            new CaffeEntity()
-            {
-                Id = "0",
-                Name = "Ca phe sua",
-                Price = 20000,
-                Discount = 10,
-                Type = Enum.ProductType.A,
-                IsActive = true
-            }
-        };
-
-        private static List<OrderItemEntity> orderItems = new List<OrderItemEntity>();
-        private static List<OrderEntity> orders = new List<OrderEntity>();
-
-        [HttpPost]
-        [Route("/api/[controller]/ordercaffe")]
-        public IActionResult AddCaffe([FromBody] CreateOrderRequestModel request)
-        {
-            var totalPrice = CalculationExtension.TotalPriceCalc(caffes, request);
-            return Ok(request);
+            _userService = userService;
         }
-    }
 
-    public static class CalculationExtension
-    {
-        public static double TotalPriceCalc(List<CaffeEntity> caffes , CreateOrderRequestModel model)
+        [HttpGet("/api/[controller]/getalluser")]
+        public IActionResult GetAllUser()
         {
-            double result = 0;
+            var result = _userService.GetAllUser();
+            return Ok(result);
+        }
 
-            foreach (var item in model.Items)
-            {
-                var caffe = caffes.Where(x => x.Id == item.CaffeId).FirstOrDefault();
-                double price = caffe.Price * item.Volumn * ((100.0 - caffe.Discount) / 100);
-                result += price;
-            }
-            return result;
+        [HttpPost("/api/[controller]/adduser")]
+        public IActionResult AddUser([FromBody] UserModel model)
+        {
+            var result = _userService.AddUser(model);
+            return Ok(result);
         }
     }
 }
@@ -94,7 +57,7 @@ namespace DocnetCorePractice.Controllers
 // 7.Viết API get all user data trả về được parse theo UserModel. nếu không có user nào thì return code 204
 
 // 8.Với input là ngày sinh(có kiều dữ liệu DateTime) và role(có kiểu dữ liệu Enum), Viết API get users với điều kiện:
-//      - là thành viên thuoc input(role) và sinh trong tháng cùa input(datetime)
+//      - là thành viên vip(có thể là vip1 hoặc vip2) và sinh trong tháng 6
 //  Nếu không có user nào thì return code 204
 
 // 9.Viết API update user với input là UserModel, kiểm tra điều kiện:
@@ -137,7 +100,7 @@ namespace DocnetCorePractice.Controllers
 //  ]
 //}
 
-// 13. Viết function tính tổng tiền của một order với input là  CreateOrderResquest model.
+// 13. Viết function tính tổng tiền của một order với input là  CreateOrderResponse model.
 
 // 14. Viết API tạo 1 order mới với input là CreateOrderRequest model được tạo ở bài 11. Yêu cầu:
 //        - Kiểm tra nếu userId nếu không tồn tại thì return code 404
