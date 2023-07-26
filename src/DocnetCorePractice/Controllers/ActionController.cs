@@ -1,6 +1,9 @@
-﻿using DocnetCorePractice.Data.Entity;
+﻿using DocnetCorePractice.Attribute;
+using DocnetCorePractice.Data.Entity;
 using DocnetCorePractice.Model;
 using DocnetCorePractice.Service;
+using DocnetCorePractice.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocnetCorePractice.Controllers
@@ -8,12 +11,23 @@ namespace DocnetCorePractice.Controllers
     [ApiController]
     public class ActionController : ControllerBase
     {
+        private readonly IAuthenticationService _authenticationService;
         public IUserService _userService;
-        public ActionController(IUserService userService)
+        public ActionController(IServiceProvider serviceProvider)
         {
-            _userService = userService;
+            _authenticationService = serviceProvider.GetRequiredService<IAuthenticationService>();
+            _userService = serviceProvider.GetRequiredService<IUserService>();
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/login")]
+        public IActionResult Login(RequestLoginModel request)
+        {
+            return Ok(_authenticationService.Authenticator(request));
+        }
+
+        [ApiKey]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("/api/[controller]/getalluser")]
         public IActionResult GetAllUser()
         {
@@ -21,6 +35,7 @@ namespace DocnetCorePractice.Controllers
             return Ok(result);
         }
 
+        
         [HttpPost("/api/[controller]/adduser")]
         public IActionResult AddUser([FromBody] UserModel model)
         {

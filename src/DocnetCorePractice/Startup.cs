@@ -1,7 +1,12 @@
 ﻿using DocnetCorePractice.Data;
+using DocnetCorePractice.Extensions;
 using DocnetCorePractice.Service;
+using DocnetCorePractice.Services;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using static DocnetCorePractice.Extensions.ApiKeyAuthorizationFilter;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DocnetCorePractice
 {
@@ -32,6 +37,20 @@ namespace DocnetCorePractice
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
             AddDI(services);
+            services.AddSingleton<ApiKeyAuthorizationFilter>();
+            services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddAuthentication("Bearer").AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("suifbweudfwqudgweufgewufgwefcgweiudgweidgwed"))
+                };
+            });
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -51,7 +70,7 @@ namespace DocnetCorePractice
                 });
             }
 
-
+            //app.UseMiddleware<ApiKeyAuthenExtension>();
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
             app.MapControllers();
