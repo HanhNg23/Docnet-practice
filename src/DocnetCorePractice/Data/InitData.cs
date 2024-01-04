@@ -5,8 +5,11 @@ namespace DocnetCorePractice.Data
 {
     public interface IInitData
     {
-        List<UserEntity> GetAllUser();
+        List<UserEntity> GetAllActiveUser();
+        List<UserEntity> GetAllUsers();
         bool AddUser(UserEntity entity);
+        bool RemoveUser(UserEntity entity);
+        List<CaffeEntity> GetCurrentCaffeEntities();
     }
     public class InitData : IInitData
     {
@@ -15,14 +18,14 @@ namespace DocnetCorePractice.Data
             new UserEntity()
             {
                 Id = Guid.NewGuid().ToString("N"),
-                FirstName = "huy",
-                LastName = "nguyen",
-                Sex = Enum.Sex.Male,
+                FirstName = "Hoang Anh",
+                LastName = "Nguyen",
+                Sex = Enum.Sex.Female,
                 Address = "Ho chi Minh",
                 Balance = 100000,
                 DateOfBirth = DateTime.Now,
                 PhoneNumber = "0123456789",
-                Roles = Enum.Roles.Basic,
+                Role = Enum.Roles.Basic,
                 TotalProduct = 0,
                 IsActive = true
             }
@@ -44,15 +47,31 @@ namespace DocnetCorePractice.Data
         private static List<OrderItemEntity> orderItems = new List<OrderItemEntity>();
         private static List<OrderEntity> orders = new List<OrderEntity>();
 
-        public List<UserEntity> GetAllUser()
+        public List<UserEntity> GetAllActiveUser()
         {
             return users.Where(x => x.IsActive == true).ToList();
+        }
+
+        public List<UserEntity> GetAllUsers()
+        {
+            return users.ToList();
         }
 
         public bool AddUser(UserEntity entity)
         {
             users.Add(entity);
             return true;
+        }
+
+        public bool RemoveUser(UserEntity entity)
+        {
+            users.Remove(entity);
+            return true;
+        }
+
+        public List<CaffeEntity> GetCurrentCaffeEntities()
+        {
+            return caffes;
         }
     }
 }

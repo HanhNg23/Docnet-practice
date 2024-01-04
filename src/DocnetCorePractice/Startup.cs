@@ -85,6 +85,7 @@ namespace DocnetCorePractice
         {
             services.AddScoped<IInitData, InitData>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<ICaffeService, CaffeService>();
 
         }
     }

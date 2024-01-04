@@ -29,7 +29,7 @@ namespace DocnetCorePractice.Data.Entity
         public int TotalProduct { get; set; }
         [DefaultValue("true")]
         public bool IsActive { get; set; }
-        public Roles Roles { get; set; }
+        public Roles Role { get; set; }
 
         public virtual ICollection<OrderEntity>?  Orders { get; set; }
         public virtual ICollection<RefreshTokens> RefreshTokens { get; set; }

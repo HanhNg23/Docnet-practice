@@ -15,7 +15,7 @@ namespace DocnetCorePractice.Data.Entity
         public string Id { get; set; }
         public DateTime CreateTimes { get; set; }
         public DateTime LastUpdateTimes { get; set; }
-        public DateTime CreateUser { get; set; }
+        public String CreateUser { get; set; }
         public DateTime LastUpdateUser { get; set; }
     }
 }
