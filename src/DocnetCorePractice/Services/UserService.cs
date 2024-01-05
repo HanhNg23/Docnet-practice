@@ -1,6 +1,7 @@
 ﻿using DocnetCorePractice.Data;
 using DocnetCorePractice.Data.Entity;
 using DocnetCorePractice.Model;
+using System.Globalization;
 
 namespace DocnetCorePractice.Service
 {
@@ -21,6 +22,7 @@ namespace DocnetCorePractice.Service
     public class UserService : IUserService
     {
         private readonly IInitData _initData;
+        private readonly string DobPattern = "dd-mm-yyyy";
 
         public UserService(IInitData initData)
         {
@@ -45,6 +47,7 @@ namespace DocnetCorePractice.Service
             {
                 var model = new UserModel
                 {
+                    Id = x.Id,
                     Address = x.Address,
                     DateOfBirth = x.DateOfBirth,
                     Balance = x.Balance,
@@ -71,6 +74,7 @@ namespace DocnetCorePractice.Service
             {
                 var model = new UserModel
                 {
+                    Id = x.Id,
                     Address = x.Address,
                     DateOfBirth = x.DateOfBirth,
                     Balance = x.Balance,
@@ -106,23 +110,20 @@ namespace DocnetCorePractice.Service
 
         public List<UserModel>? UpdateUser(UserModel userModel)
         {
-            var entity = new UserEntity
-            {
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName,
-                Address = userModel.Address,
-                DateOfBirth = userModel.DateOfBirth,
-                Balance = userModel.Balance,
-                IsActive = true,
-                PhoneNumber = userModel.PhoneNumber,
-                Sex = userModel.Sex,
-                TotalProduct = userModel.TotalProduct,
-                Role = Enum.Roles.Basic
-            };
             var userToUpdate = _initData.GetAllUsers().FirstOrDefault(x => x.Id.Equals(userModel.Id));
-            userToUpdate = entity;
-            _initData.AddUser(userToUpdate);
-            return GetAllUsers();
+            
+            userToUpdate.FirstName = userModel.FirstName;
+            userToUpdate.LastName = userModel.LastName;
+            userToUpdate.Address = userModel.Address;
+            userToUpdate.DateOfBirth = userModel.DateOfBirth;
+            userToUpdate.Balance = userModel.Balance;
+            userToUpdate.IsActive = true;
+            userToUpdate.PhoneNumber = userModel.PhoneNumber;
+            userToUpdate.Sex = userModel.Sex;
+            userToUpdate.TotalProduct = userModel.TotalProduct;
+            userToUpdate.Role = Enum.Roles.Basic;
+
+            return GetAllUsers().Where(x => userModel.Id.Equals(x.Id)).ToList();
 
         }
 
@@ -131,6 +132,9 @@ namespace DocnetCorePractice.Service
             var entity = _initData.GetAllUsers().FirstOrDefault(x => x.Id.Equals(userModel.Id));
             return _initData.RemoveUser(entity);
         }
+
+        
+        
        
     }
 }

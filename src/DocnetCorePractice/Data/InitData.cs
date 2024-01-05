@@ -9,7 +9,7 @@ namespace DocnetCorePractice.Data
         List<UserEntity> GetAllUsers();
         bool AddUser(UserEntity entity);
         bool RemoveUser(UserEntity entity);
-        List<CaffeEntity> GetCurrentCaffeEntities();
+        List<CaffeEntity> GetAllCaffeEntities();
     }
     public class InitData : IInitData
     {
@@ -17,13 +17,13 @@ namespace DocnetCorePractice.Data
         {
             new UserEntity()
             {
-                Id = Guid.NewGuid().ToString("N"),
+                //Id = Guid.NewGuid().ToString("N"),
                 FirstName = "Hoang Anh",
                 LastName = "Nguyen",
                 Sex = Enum.Sex.Female,
                 Address = "Ho chi Minh",
                 Balance = 100000,
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = new DateTime(year:2003, month:5, day:1),
                 PhoneNumber = "0123456789",
                 Role = Enum.Roles.Basic,
                 TotalProduct = 0,
@@ -35,11 +35,12 @@ namespace DocnetCorePractice.Data
         {
             new CaffeEntity()
             {
-                Id = Guid.NewGuid().ToString("N"),
+                //Id = Guid.NewGuid().ToString("N"),
                 Name = "Ca phe sua",
                 Price = 20000,
                 Discount = 10,
                 Type = Enum.ProductType.A,
+                CreateUser = "Hoang Anh",
                 IsActive = true
             }
         };
@@ -69,7 +70,7 @@ namespace DocnetCorePractice.Data
             return true;
         }
 
-        public List<CaffeEntity> GetCurrentCaffeEntities()
+        public List<CaffeEntity> GetAllCaffeEntities()
         {
             return caffes;
         }

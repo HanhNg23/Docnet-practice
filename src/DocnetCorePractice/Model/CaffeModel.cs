@@ -6,8 +6,7 @@ namespace DocnetCorePractice.Model
 {
     public class CaffeModel
     {
-        [Required]
-        [NotNull]
+        [AllowNull]
         public string Id { get; set; }
         [Required]
         [NotNull]

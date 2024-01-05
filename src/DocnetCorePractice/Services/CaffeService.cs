@@ -19,16 +19,16 @@ namespace DocnetCorePractice.Services
         private readonly IInitData _initData; //inject the already IInitData instance 
         private List<CaffeEntity> _caffeEntities;
         private readonly ILogger _logger; 
-        public CaffeService(InitData initData)
+        public CaffeService(IInitData initData)
         {
             _initData = initData; 
-            _caffeEntities = _initData.GetCurrentCaffeEntities();
+            _caffeEntities = _initData.GetAllCaffeEntities();
             _logger = Log.Logger;
         }
         
         public List<CaffeEntity>? GetAllCaffeEntities()
         {
-            List<CaffeEntity> caffeList = _initData.GetCurrentCaffeEntities();
+            List<CaffeEntity> caffeList = _initData.GetAllCaffeEntities();
             return caffeList;
         }
 
@@ -53,7 +53,7 @@ namespace DocnetCorePractice.Services
 
             _caffeEntities.Add(caffe);
             var addedCaffeEntity = _caffeEntities.FirstOrDefault(x => x.Id.Equals(caffe.Id));
-            _logger.Information("New Caffe: {}", _caffeEntities);
+            _logger.Information("New Caffe: " + caffe);
             return addedCaffeEntity;
 
         }
@@ -61,8 +61,8 @@ namespace DocnetCorePractice.Services
         public CaffeEntity UpdateExistedCaffe(CaffeEntity caffe)
         {
             var oldCaffe = _caffeEntities.FirstOrDefault(x => x.Id.Equals(caffe.Id));
-            oldCaffe = caffe;
-            return AddNewCaffe(caffe);
+            return oldCaffe = caffe;
+            
         }
 
         public Boolean DeleteCaffe(CaffeEntity caffe)

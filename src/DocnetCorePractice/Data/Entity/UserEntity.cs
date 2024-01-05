@@ -2,16 +2,23 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace DocnetCorePractice.Data.Entity
 {
     [Table("User")]
     public class UserEntity : Entity
     {
+        public UserEntity() 
+        { 
+            Id = Guid.NewGuid().ToString();
+        }
+        
+        [Key]
+        public string Id { get; set; }
         [Required]
         [StringLength(50)]
         public string FirstName { get; set; }
-
         [Required]
         [StringLength(50)]
         public string LastName { get; set; }

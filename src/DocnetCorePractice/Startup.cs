@@ -25,7 +25,7 @@ namespace DocnetCorePractice
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new OpenApiInfo { Title = "DocNetPractice", Version = "v1" });
+                o.SwaggerDoc("v1", new OpenApiInfo { Title = "DotNetPractice", Version = "v1" });
             });
 
             services.Configure<RouteOptions>(options =>
@@ -60,6 +60,7 @@ namespace DocnetCorePractice
                 app.UseDeveloperExceptionPage();
             }
             var isUserSwagger = _configuration.GetValue<bool>("UseSwagger", false);
+            Console.WriteLine("Is Use Swagger: " + isUserSwagger);
             if (isUserSwagger)
             {
                 app.UseSwagger();
@@ -85,7 +86,7 @@ namespace DocnetCorePractice
         {
             services.AddScoped<IInitData, InitData>();
             services.AddScoped<IUserService, UserService>();
-            services.AddSingleton<ICaffeService, CaffeService>();
+            services.AddScoped<ICaffeService, CaffeService>();
 
         }
     }
