@@ -7,6 +7,7 @@ using Serilog;
 using static DocnetCorePractice.Extensions.ApiKeyAuthorizationFilter;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace DocnetCorePractice
 {
@@ -35,7 +36,13 @@ namespace DocnetCorePractice
                 options.LowercaseQueryStrings = false;
             });
 
+            //Database configuration
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDBContext>(options => { 
+                options.UseSqlServer(connectionString);
+            });
+            
+            
             AddDI(services);
             services.AddSingleton<ApiKeyAuthorizationFilter>();
             services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();

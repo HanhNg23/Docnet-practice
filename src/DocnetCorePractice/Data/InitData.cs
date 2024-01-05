@@ -10,9 +10,12 @@ namespace DocnetCorePractice.Data
         bool AddUser(UserEntity entity);
         bool RemoveUser(UserEntity entity);
         List<CaffeEntity> GetAllCaffeEntities();
+
+        void InitialeDbData();
     }
     public class InitData : IInitData
     {
+       
         private static List<UserEntity> users = new List<UserEntity>()
         {
             new UserEntity()
@@ -27,6 +30,7 @@ namespace DocnetCorePractice.Data
                 PhoneNumber = "0123456789",
                 Role = Enum.Roles.Basic,
                 TotalProduct = 0,
+                Account = "HoangAnh123",
                 IsActive = true
             }
         };
@@ -41,12 +45,36 @@ namespace DocnetCorePractice.Data
                 Discount = 10,
                 Type = Enum.ProductType.A,
                 CreateUser = "Hoang Anh",
-                IsActive = true
+                IsActive = true,
+                
             }
         };
 
+        
         private static List<OrderItemEntity> orderItems = new List<OrderItemEntity>();
         private static List<OrderEntity> orders = new List<OrderEntity>();
+
+        public void InitialeDbData()
+        {
+            AppDBContext context = new AppDBContext();
+            context.Database.EnsureCreated();
+            Console.WriteLine("ARE YOU HEREEEEEEEEEEEEE !");
+            Console.WriteLine("Context Caffe có any  " + context.Caffe.Any());
+         
+            if(!context.Caffe.Any())
+            {
+                foreach(CaffeEntity c in caffes)
+                {
+                    context.Caffe.Add(c);
+                    Console.WriteLine("ADD CAFFE " + c.Id + " " + c.Name);
+                    Console.WriteLine("ADD CAFFE ");
+                }
+                context.SaveChanges();
+            }
+            
+            Console.WriteLine("Tới save rồi kiểm tra db");
+
+        }
 
         public List<UserEntity> GetAllActiveUser()
         {

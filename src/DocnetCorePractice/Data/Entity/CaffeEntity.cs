@@ -1,16 +1,18 @@
 ﻿using DocnetCorePractice.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocnetCorePractice.Data.Entity
 {
+    [Table("Caffe")]
     public class CaffeEntity : Entity
     {
         public CaffeEntity() 
         { 
-           Id = Guid.NewGuid().ToString();
+//      Id = Guid.NewGuid().ToString();
         }
-        [Key]
-        public string Id { get; set; }
+
+        //      public string Id { get; set; }
         public string Name { get; set; }
         public ProductType Type { get; set; }
         public double Price { get; set; }

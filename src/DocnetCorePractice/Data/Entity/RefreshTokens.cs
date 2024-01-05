@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocnetCorePractice.Data.Entity
 {
+    [Table("Refresh Token")]
     public class RefreshTokens
     {
-        public string Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string TokenID { get; set; }
 
         [ForeignKey("UserId")]
         public UserEntity User { get; set; }

@@ -11,11 +11,11 @@ namespace DocnetCorePractice.Data.Entity
     {
         public UserEntity() 
         { 
-            Id = Guid.NewGuid().ToString();
+//          Id = Guid.NewGuid().ToString();
         }
         
-        [Key]
-        public string Id { get; set; }
+ //     [Key]
+ //     public string Id { get; set; }
         [Required]
         [StringLength(50)]
         public string FirstName { get; set; }

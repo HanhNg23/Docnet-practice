@@ -55,7 +55,8 @@ namespace DocnetCorePractice.Service
                     LastName = x.LastName,
                     PhoneNumber = x.PhoneNumber,
                     Sex = x.Sex,
-                    TotalProduct = x.TotalProduct
+                    TotalProduct = x.TotalProduct,
+                    Account = x.Account
                 };
                 result.Add(model);
             });
@@ -82,7 +83,8 @@ namespace DocnetCorePractice.Service
                     LastName = x.LastName,
                     PhoneNumber = x.PhoneNumber,
                     Sex = x.Sex,
-                    TotalProduct = x.TotalProduct
+                    TotalProduct = x.TotalProduct,
+                    Account = x.Account
                 };
                 result.Add(model);
             });
@@ -102,7 +104,8 @@ namespace DocnetCorePractice.Service
                 PhoneNumber = userModel.PhoneNumber,
                 Sex = userModel.Sex,
                 TotalProduct = userModel.TotalProduct,
-                Role = Enum.Roles.Basic
+                Role = Enum.Roles.Basic,
+                Account = userModel.Account
             };
             _initData.AddUser(entity);
             return GetAllActiveUsers();
@@ -122,6 +125,7 @@ namespace DocnetCorePractice.Service
             userToUpdate.Sex = userModel.Sex;
             userToUpdate.TotalProduct = userModel.TotalProduct;
             userToUpdate.Role = Enum.Roles.Basic;
+            userToUpdate.Account = userModel.Account;
 
             return GetAllUsers().Where(x => userModel.Id.Equals(x.Id)).ToList();
 

@@ -6,9 +6,11 @@ namespace DocnetCorePractice.Data.Entity
     {
         protected Entity()
         {
-            //Id = Guid.NewGuid().ToString("N");
+            Id = Guid.NewGuid().ToString();
             CreateTimes = DateTime.Now;
             LastUpdateTimes = DateTime.Now;
+            LastUpdateUser = DateTime.Now;
+            CreateUser = "HA";
         }
 
         [Key]
